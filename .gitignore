@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# PyCharm
+.idea/
+
+# Python
+__pycache__/
+venv/
+/code/.coverage
+/code/.pytest_cache/
+
+# dotenv
+.env

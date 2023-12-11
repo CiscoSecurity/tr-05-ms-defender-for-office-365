@@ -1,0 +1,38 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks: # Some out-of-the-box hooks for pre-commit.
+      - id: check-added-large-files # Default - args: ["--maxkb=500"]
+      - id: check-case-conflict
+      - id: check-shebang-scripts-are-executable
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: debug-statements
+      - id: detect-aws-credentials
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: mixed-line-ending
+        args: [ "--fix=lf" ]
+      - id: no-commit-to-branch
+      - id: check-json
+#       possibly useful but questionable hooks
+#       - id: requirements-txt-fixer
+#       - id: sort-simple-yaml
+#       - id: check-xml
+#       - id: detect-private-key
+#       - id: pretty-format-json
+#         args: ["--autofix"]
+
+  - repo: https://github.com/psf/black
+    rev: 23.11.0
+    hooks:
+      - description: "BLACK - The Uncompromising Code Formatter"
+        id: black
+        args: [ "--line-length=90", "--target-version=py311", "--skip-magic-trailing-comma" ]
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.1.6
+    hooks:
+      - description: "Ruff - An extremely fast Python linter, written in Rust."
+        id: ruff
+        args: ["--target-version=py311", "--line-length=90", "--fix", "--respect-gitignore", "--no-cache", "--ignore=E501" ]
