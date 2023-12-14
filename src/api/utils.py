@@ -4,6 +4,8 @@
 from api.globals import g
 from config import Settings
 
+s = Settings()
+
 
 # def get_base_url(creds: dict) -> str:
 #     hostname = split("(https?://)?", creds.get("api_base_url"), 1)[-1]
@@ -38,14 +40,33 @@ from config import Settings
 
 
 def set_entities_limit(payload):
-    default = Settings.CTR_ENTITIES_LIMIT_DEFAULT
+    default = s.CTR_DEFAULT_ENTITIES_LIMIT
     try:
         value = int(payload["CTR_ENTITIES_LIMIT"])
-        g.settings.CTR_ENTITIES_LIMIT_DEFAULT = (
+        s.CTR_DEFAULT_ENTITIES_LIMIT = (
             value if value in range(1, default + 1) else default
         )
     except (ValueError, TypeError, KeyError):
-        g.settings.CTR_ENTITIES_LIMIT_DEFAULT = default
+        s.CTR_DEFAULT_ENTITIES_LIMIT = default
+
+
+def format_docs(docs):
+    return {"count": len(docs), "docs": docs}
+
+
+def jsonify_errors(error):
+    # According to the official documentation, an error here means that the
+    # corresponding TR module is in an incorrect state and needs to be reconfigured:
+    # https://visibility.amp.cisco.com/help/alerts-errors-warnings.
+    error["type"] = "fatal"
+    error["code"] = error.pop("code").lower().replace("_", " ")
+
+    data = {"errors": [error]}
+
+    if g.get("sightings") and g.sightings:
+        data["data"] = {"sightings": format_docs(g.sightings)}
+
+    return {"data": data}
 
 
 # def remove_duplicates(observables):

@@ -15,7 +15,7 @@ from unittests.payloads_for_tests import PRIVATE_KEY
 def client():
     main.app.rsa_private_key = PRIVATE_KEY
     main.app.testing = True
-    main.app.settings = Settings()
+    main.app.SETTINGS = Settings()
 
     with TestClient(main.app) as client:
         yield client

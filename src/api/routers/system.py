@@ -4,38 +4,24 @@ from fastapi import APIRouter, Depends
 from fastapi.requests import Request
 from fastapi.responses import ORJSONResponse
 
+from api.client import Client
 from api.errors import WatchdogError
 from api.globals import g
-from api.routers.auth import oauth2_scheme
+from api.routers.auth import get_credentials, oauth2_scheme
 
 router = APIRouter(tags=["System checks"], dependencies=[Depends(oauth2_scheme)])
 Token = Annotated[str, Depends(oauth2_scheme)]
 
 
 @router.post("/health")
-def health(token: Token, request: Request) -> ORJSONResponse:
-    # credentials = get_credentials(token, request)
-    # data = client(credentials).health()
-    # return ORJSONResponse({"status": "ok"})
-    return ORJSONResponse(
-        {
-            "detail": [
-                {
-                    "type": "missing",
-                    "loc": ["body"],
-                    "msg": "Field required",
-                    "input": None,
-                    "url": "https://errors.pydantic.dev/2.4/v/missing",
-                }
-            ]
-        },
-        422,
-    )
+def health(request: Request, token: Token) -> ORJSONResponse:
+    Client(get_credentials(token, request)).health()
+    return ORJSONResponse({"data": {"status": "ok"}})
 
 
 @router.post("/version")
 def version() -> ORJSONResponse:
-    return ORJSONResponse({"version": g.settings.VERSION})
+    return ORJSONResponse({"version": g.SETTINGS.VERSION})
 
 
 @router.get("/watchdog")
