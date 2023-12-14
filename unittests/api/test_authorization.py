@@ -143,3 +143,11 @@ def test_call_with_missing_jwks_host(
 
     assert response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
     assert response.json() == UPE_ERROR
+
+
+@patch("requests.get")
+def test_login_valid_credentials(mock_request, client):
+    response = client.post("/token", data={"username": "johndoe"})
+
+    assert response.status_code == 200
+    assert "access_token" in response.json()

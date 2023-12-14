@@ -1,11 +1,11 @@
 import json
 from typing import Annotated
 
+import jwt
 import requests
 from fastapi import APIRouter, Depends
 from fastapi.requests import Request
 from fastapi.security import OAuth2PasswordBearer
-from jose import jwt
 
 from api.errors import (
     AUTH_ERROR,
@@ -40,10 +40,12 @@ def generate_token(creds: OAuth2RequestForm, request: Request) -> str:
         "api_base_url": s.BASE_URL,
         "aud": f"{request.url.scheme}://{request.url.hostname}:{request.url.port}",
         "jwks_host": s.JWK_HOST,
-        "tenant_id": creds.username,
+        "tenant_id": creds.username or s.TENANT,
         # "password": creds.password,
         "client_id": creds.client_id,
         "client_secret": creds.client_secret,
+        "token_url": s.TOKEN_URL,
+        "CTR_ENTITIES_LIMIT": s.CTR_DEFAULT_ENTITIES_LIMIT,
     }
     return jwt.encode(payload, s.PRIVATE_KEY, "RS256", s.HEADER)
 
@@ -78,14 +80,14 @@ def get_credentials(token, request=None):
         scheme, token = request.headers.get("Authorization").split()
         assert scheme.lower() == "bearer"
 
-    jwks_payload = jwt.decode(token, options={"verify_signature": False})
+    aud = f"{request.url.scheme}://{request.url.hostname}:{request.url.port}"
+    jwks_payload = jwt.decode(token, options={"verify_signature": False}, audience=aud)
     assert "jwks_host" in jwks_payload
 
     jwks_host = jwks_payload.get("jwks_host")
     if not jwks_host:
         raise AuthorizationError(JWKS_HOST_MISSING)
     key = get_public_key(jwks_host, token)
-    aud = f"{request.url.scheme}://{request.url.hostname}:{request.url.port}"
     payload = jwt.decode(token, key, ["RS256"], audience=aud)
     set_entities_limit(payload)
 

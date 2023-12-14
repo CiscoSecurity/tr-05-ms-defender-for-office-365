@@ -113,23 +113,13 @@ class CTRUnexpectedResponseError(CTRBaseError):
         super().__init__(UNKNOWN, message=str(message))
 
 
-class DefenderForEndpointTimerangeError(CTRBaseError):
-    def __init__(self, start_time, end_time):
-        super().__init__(
-            TIME_RANGE_ERROR,
-            "Invalid isoformat string"
-            " validate the value of your query parameters:"
-            f" {start_time, end_time}",
-        )
-
-
-class DefenderForEndpointConnectionError(CTRBaseError):
+class CTRConnectionError(CTRBaseError):
     def __init__(self, url):
         msg = (
-            "Unable to get token for Microsoft Defender For Endpoint, "
-            + f" validate the configured API Authorization URL: {url}"
+            "Unable to get token for Microsoft Defender For Office 365. "
+            + f"Validate the configured API Authorization URL: {url}"
             if url
-            else " you need to provide a URL"
+            else "You need to provide a URL"
         )
 
         super().__init__(CONNECTION_ERROR, msg)
@@ -142,7 +132,7 @@ class InvalidArgumentError(CTRBaseError):
 
 class TemplateConnectionError(CTRBaseError):
     def __init__(self, url):
-        msg = "Unable to connect to Template, validate the configured API endpoint: {url}"
+        msg = f"Unable to connect. Validate the configured API endpoint: {url}"
         super().__init__(CONNECTION_ERROR, msg)
 
 
@@ -150,8 +140,8 @@ class TimerangeError(CTRBaseError):
     def __init__(self, start_time, end_time):
         super().__init__(
             TIME_RANGE_ERROR,
-            "Invalid iso format string validate the value of your query parameters:"
-            f" {start_time, end_time}",
+            "Invalid iso format string. "
+            "Validate the value of your query parameters: {start_time, end_time}",
         )
 
 
