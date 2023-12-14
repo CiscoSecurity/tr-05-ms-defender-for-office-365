@@ -16,7 +16,6 @@ class Settings(BaseModel):
     SCOPE: str = f"{API_HOST}/.default"
 
     OBSERVABLE_TYPES: dict = {
-        "sha1": "SHA1",
         "sha256": "SHA256",
         "ip": "IP",
         "ms_machine_id": "ms_machine_id",
@@ -24,7 +23,6 @@ class Settings(BaseModel):
     }
 
     RESPOND_TYPES: dict = {
-        "sha1": "FileSha1",
         "sha256": "FileSha256",
         "ip": "IpAddress",
         "ms_machine_id": "ms_machine_id",

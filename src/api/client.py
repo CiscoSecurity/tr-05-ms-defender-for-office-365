@@ -15,6 +15,7 @@ from api.errors import (
     CTRUnexpectedResponseError,
     WRONG_CREDENTIALS,
 )
+from api.schemas import ObservableSchema
 from config import Settings
 
 s = Settings()
@@ -89,6 +90,9 @@ class Client:
                     raise CTRUnexpectedResponseError(response.json())
         except (ConnectionError, InvalidURL) as e:
             raise CTRConnectionError(url) from e
+
+    def observe(self, observable: ObservableSchema):
+        pass
 
     def health(self):
         query = {"Query": "AlertEvidence | limit 1 | project Timestamp"}

@@ -10,7 +10,7 @@ from unittests.utils import get_headers
 
 
 def routes():
-    # yield "/health"
+    yield "/health"
     yield "/deliberate/observables"
     yield "/observe/observables"
     yield "/refer/observables"
