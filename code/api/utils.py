@@ -1,6 +1,8 @@
 # from datetime import datetime
 # from re import search, split
 #
+from datetime import datetime
+
 from api.globals import g
 from config import Settings
 
@@ -33,10 +35,10 @@ s = Settings()
 #
 # def iso_to_timestamp(date: datetime) -> int:
 #     return int(datetime.timestamp(date) * 1000)
-#
-#
-# def timestamp_to_iso(timestamp):
-#     return f"{datetime.utcfromtimestamp(timestamp // 1000).isoformat()}Z"
+
+
+def timestamp_to_iso(timestamp):
+    return f"{datetime.utcfromtimestamp(timestamp // 1000).isoformat()}Z"
 
 
 def set_entities_limit(payload):
