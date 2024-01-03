@@ -11,6 +11,7 @@ INDICATOR = "indicator"
 MAC_ADDRESS = "mac_address"
 MSO_ID = ""
 PRODUCER = ""
+RELATIONSHIP = "relationship"
 SENSOR = ""
 SOURCE = ""
 SIGHTING = "sighting"
@@ -99,7 +100,7 @@ class Indicator:
 
         hashed = hashlib.sha256(
             f"{entity_type}|{model['uuid']}|"
-            "cisco.xdr.mso365.integration".encode("UTF-8")
+            "cisco.xdr.microsoft-defender-for-office-365.integration".encode("UTF-8")
         )
         return f"transient:{entity_type}-{hashed.hexdigest()}"
 
@@ -115,5 +116,29 @@ class Indicator:
             "title": model["name"],
             **({"description": ds} if (ds := model.get("description")) else {}),
             "external_ids": [model["uuid"]],
+            **self.defaults,
+        }
+
+
+class Relationship:
+    defaults = {"schema_version": Settings.CTIM_SCHEMA_VERSION, "type": RELATIONSHIP}
+
+    @staticmethod
+    def _build_transient_id(source_ref: str, target_ref: str, relation_type: str) -> str:
+        hashed = hashlib.sha256(
+            f"{RELATIONSHIP}|{source_ref}|{target_ref}|{relation_type}"
+            "|cisco.xdr.microsoft-defender-for-office-365.integration".encode("UTF-8")
+        )
+        return f"transient:{RELATIONSHIP}-{hashed.hexdigest()}"
+
+    def extract(self, source_ref: str, target_ref: str, relation_type: str) -> dict:
+        """Extract relationships from source and target structure ID
+        and fill passed relation type between them."""
+
+        return {
+            "id": self._build_transient_id(source_ref, target_ref, relation_type),
+            "relationship_type": relation_type,
+            "source_ref": source_ref,
+            "target_ref": target_ref,
             **self.defaults,
         }
