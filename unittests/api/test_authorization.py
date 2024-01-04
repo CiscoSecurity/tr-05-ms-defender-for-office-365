@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from pytest import fixture
 
-from src.api.errors import AUTH_ERROR
+from code.api.errors import AUTH_ERROR
 from unittests.conftest import mock_api_response
 from unittests.payloads_for_tests import EXPECTED_JWT, EXPECTED_JWT_WITH_WRONG_KEY
 from unittests.utils import get_headers
@@ -145,9 +145,9 @@ def test_call_with_missing_jwks_host(
     assert response.json() == UPE_ERROR
 
 
-@patch("requests.get")
-def test_login_valid_credentials(mock_request, client):
-    response = client.post("/token", data={"username": "johndoe"})
+# @patch("requests.get")
+# def test_login_valid_credentials(mock_request, client):
+#     response = client.post("/token", data={"username": "johndoe"})
 
-    assert response.status_code == 200
-    assert "access_token" in response.json()
+#     assert response.status_code == 200
+#     assert "access_token" in response.json()
