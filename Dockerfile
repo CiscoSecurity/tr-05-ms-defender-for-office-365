@@ -1,5 +1,5 @@
 FROM alpine:3.18
-LABEL maintainer="Ian Redden <iaredden@cisco.com>"
+LABEL maintainer="Jyoti Verma <jyoverma@cisco.com>"
 
 ENV PIP_IGNORE_INSTALLED 1
 
@@ -15,11 +15,10 @@ RUN set -ex && pip install --no-cache-dir --upgrade pipenv && pipenv install --s
 # copy over scripts to init
 ADD scripts /
 RUN chmod +x /*.sh
-ADD src /app
+ADD code /app
 
 # entrypoint
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["/start.sh"]
 
 WORKDIR app
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9090"]
