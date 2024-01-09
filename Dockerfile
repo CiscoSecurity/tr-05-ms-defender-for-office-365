@@ -21,4 +21,4 @@ ADD code /app
 ENTRYPOINT ["/entrypoint.sh"]
 
 WORKDIR app
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9090"]
+CMD ["/start.sh"]
