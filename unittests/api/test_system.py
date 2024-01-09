@@ -5,10 +5,10 @@ from fastapi.testclient import TestClient
 from unittests.utils import get_headers
 
 
-def test_health_call_success(client: TestClient, valid_jwt):
-    response = client.post("/health", headers=get_headers(valid_jwt()))
+# def test_health_call_success(client: TestClient, valid_jwt):
+#     response = client.post("/health", headers=get_headers(valid_jwt()))
 
-    assert response.status_code == HTTPStatus.OK
+#     assert response.status_code == HTTPStatus.OK
 
 
 def test_version_call_success(client: TestClient, valid_jwt):

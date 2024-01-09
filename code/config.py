@@ -34,6 +34,6 @@ class Settings(BaseModel):
     # Token data
     HEADER: dict = {"kid": "02B1174234C29F8EFB69911438F597FF3FFEE6B7"}
     JWK_HOST: str = "yb2olpbxka.execute-api.us-east-1.amazonaws.com/dev"
-    PRIVATE_KEY: str = open("api/key.pak", "r").read()
+    # PRIVATE_KEY: str = open("api/key.pak", "r").read()
     TENANT: str = "f131e32e-2532-4e5f-80fc-f9cd8fcaea27"
     TOKEN_URL: str = f"https://login.microsoftonline.com/{TENANT}/oauth2/v2.0/token"
