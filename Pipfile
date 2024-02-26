@@ -5,7 +5,7 @@ url = "https://pypi.org/simple"
 
 [packages]
 cryptography = "==41.0.4"
-fastapi = "==0.108.0"
+fastapi = "==0.110.0"
 httpx = "==0.26.0"
 itsdangerous = "==2.1.2"
 orjson = "==3.9.10"
